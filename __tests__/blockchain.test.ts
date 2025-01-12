@@ -19,21 +19,33 @@ test('should be valid (genesis)', () => {
 
 test('should be valid (two blocks)', () => {
     const blockchain = new Blockchain();
-    blockchain.addBlock(new Block(1, blockchain.blocks[0].hash, "Block 2"));
+    blockchain.addBlock(new Block({
+        index: 1,
+        previousHash: blockchain.blocks[0].hash,
+        data: "Block 2"
+    } as Block));
     expect(blockchain.isValid().sucess).toEqual(true);
     //expect(valid).toBeTruthy(); // pode usar assim ou a linha de cima
 })
 
 test('should NOT be valid', () => {
     const blockchain = new Blockchain();
-    blockchain.addBlock(new Block(1, blockchain.blocks[0].hash, "Block 2"));
+    blockchain.addBlock(new Block({
+        index: 1,
+        previousHash: blockchain.blocks[0].hash,
+        data: "Block 2"
+    } as Block));
     blockchain.blocks[1].data = "A transfere 2 para b";
     expect(blockchain.isValid().sucess).toEqual(false);    
 })
 
 test('Should add block', () => {
     const blockchain = new Blockchain();
-    const result = blockchain.addBlock(new Block(1, blockchain.blocks[0].hash, "Block 2"));    
+    const result = blockchain.addBlock(new Block({
+        index: 1,
+        previousHash: blockchain.blocks[0].hash,
+        data: "Block 2"
+    } as Block));    
     expect(result.sucess).toEqual(true);
     //expect(valid).toBeTruthy(); // pode usar assim ou a linha de cima
 })
@@ -46,7 +58,11 @@ test('Should get block', () => {
 
 test('Should NOT add block', () => {
     const blockchain = new Blockchain();
-    const block = new Block(-1, blockchain.blocks[0].hash, "Block 2")
+    const block = new Block(new Block({
+        index: -1,
+        previousHash: blockchain.blocks[0].hash,
+        data: "Block 2"
+    } as Block));
     const result = blockchain.addBlock(block);
     expect(result.sucess).toEqual(false);    
 })

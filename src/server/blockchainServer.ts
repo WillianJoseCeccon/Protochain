@@ -34,9 +34,15 @@ app.get('/blocks/:indexOrHash', (req, res, next) => {
 })
 
 app.post('/blocks', (req, res, next) => {
-    if(!req.body.hash) return res.sendStatus(422); // 422 status para não processavel
+    if(req.body.hash === undefined) return res.sendStatus(422); // 422 status para não processavel
 
-    
+    const block = new Block(req.body as Block);
+    const validation = blockchain.addBlock(block);
+
+    if(validation.sucess)
+        res.status(201).json(block);
+    else
+        res.status(400).json(validation);
 })
 
 app.listen(PORT, () => {
